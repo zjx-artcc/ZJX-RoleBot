@@ -1,0 +1,8 @@
+services:
+  bot:
+    build:
+      context: .
+    container_name: discordBot
+    environment:
+      NODE_ENV: production
+      TOKEN: ${TOKEN}
