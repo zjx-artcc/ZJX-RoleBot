@@ -8,7 +8,7 @@ on:
 jobs:
   build_bot:
     name: Build Bot
-    runs-on: self-hosted
+    runs-on: [self-hosted, discord-user]
     steps:
       - name: Pull Repo
         run: cd /home/zjxartcc_discord/rolebot && git pull
