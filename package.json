@@ -9,8 +9,8 @@
     "sapphire": "^0.0.3",
     "tslib": "^2.6.2"
   },
-  "name": "discordbot",
-  "description": "Bot for the vIDS discord",
+  "name": "zjx-role-bot",
+  "description": "A bot for the ZJX Discord that automatically assigns roles based on VATSIM rating",
   "version": "1.0.0",
   "main": "./dist/Bot.js",
   "scripts": {
@@ -18,14 +18,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/virtualids/discordBot.git"
+    "url": "git+https://github.com/zjx-artcc/rolebot/discordBot.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/virtualids/discordBot/issues"
+    "url": "https://github.com/zjx-artcc/rolebot/issues"
   },
-  "homepage": "https://github.com/virtualids/discordBot#readme",
+  "homepage": "https://github.com/zjx-artcc/rolebot#readme",
   "devDependencies": {
     "@types/node": "^20.4.2",
     "eslint": "^8.44.0",

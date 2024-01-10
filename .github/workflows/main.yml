@@ -4,15 +4,17 @@ on:
   push:
     branches: 'master'
   workflow_dispatch:
-    
+  
 jobs:
-  build_api:
-    runs-on: self-hosted
+  build_bot:
+    name: Build Bot
+    runs-on: [self-hosted, discord-user]
     steps:
-      - name: Setup
-        uses: actions/checkout@v4
-      - name: Deploy
-        env: 
-          TOKEN: ${{ secrets.TOKEN }}
-        run: docker compose up --build -d
-        
+      - name: Pull Repo
+        run: cd /home/zjxartcc_discord/rolebot && git pull
+      - name: Install dependencies
+        run: cd /home/zjxartcc_discord/rolebot && yarn
+      - name: Build Bot
+        run: tsc -p /home/zjxartcc_discord/rolebot/tsconfig.json
+      - name: Run Bot
+        run: pm2 restart rolebot --watch
