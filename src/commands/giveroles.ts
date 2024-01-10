@@ -35,7 +35,7 @@ export class VerifyCommand extends Command {
       return;
     }
 
-     res = await axios.get(`https://api.vatusa.net/v2/user/${data.user_id}`);
+    res = await axios.get(`https://api.vatusa.net/v2/user/${data.user_id}`);
     if (res.status == 404) {
       await handleError(2, interaction);
       return;
@@ -123,6 +123,9 @@ export class VerifyCommand extends Command {
           break;
         } 
         let role: Role | undefined | null;
+        if (user.roles[i].facility != "ZJX") {
+          break;
+        }
         switch(user.roles[i].role) {
           case "ATM": 
             role = await interaction.guild?.roles.fetch(config.atm);
@@ -173,6 +176,11 @@ async function handleError(error: number, interaction: Command.ChatInputCommandI
       break;
     }
     case 2: {
+      errorText = "You were not found in the VATUSA database! You have been issued the pilot role"
+      await interaction.editReply(errorText);
+      break;
+    }
+    case 3: {
       errorText = "Something went wrong, please try again!"
       await interaction.editReply(errorText);
       await sendError("Some error occured while verifying a user", interaction);
