@@ -51,6 +51,7 @@ export class VerifyCommand extends Command {
     }
     
     let member = await interaction.guild?.members.fetch(uid);
+    member.roles.remove(member.roles.cache);
     await member.roles.add('475759174249349123'); //VATSIMController role
     if (member != null) {
       switch (user.rating) {
