@@ -17,4 +17,4 @@ jobs:
       - name: Build Bot
         run: tsc -p /home/zjxartcc_discord/rolebot/tsconfig.json
       - name: Run Bot
-        run: pm2 restart rolebot --watch
+        run: pm2 restart rolesbot --watch
