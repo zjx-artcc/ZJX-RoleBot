@@ -46,7 +46,8 @@ export class VerifyCommand extends Command {
       lname: res.data.data.lname,
       artcc: res.data.data.facility,
       rating: res.data.data.rating.toString(),
-      roles: res.data.data.roles
+      roles: res.data.data.roles,
+      visiting_facilities: res.data.data.visiting_facilities
     }
     
     let member = await interaction.guild?.members.fetch(uid);
@@ -105,7 +106,13 @@ export class VerifyCommand extends Command {
         let role = await interaction.guild?.roles.fetch(rating);
         await member?.roles.add(role!);
         if (user.artcc != "ZJX") {
-          role = await interaction.guild?.roles.fetch(config.visitor);
+          for (let i = 0; i < user.visiting_facilities.length; i++) {
+            if (user.visiting_facilities[i].facility == "ZJX") {
+              role = await interaction.guild?.roles.fetch(config.visitor);
+            } else {
+              break;
+            }
+          }
         } else {
           role = await interaction.guild?.roles.fetch(config.member);
         }
@@ -216,6 +223,15 @@ interface User {
       facility: string;
       role: string;
       created_at: string;
+    }
+  ]
+  visiting_facilities: [
+    {
+      id: number;
+      cid: number;
+      facility: string;
+      created_at: string;
+      updated_at: string;
     }
   ]
 }
