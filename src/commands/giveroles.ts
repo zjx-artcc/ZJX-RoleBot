@@ -47,12 +47,14 @@ export class VerifyCommand extends Command {
       artcc: res.data.data.facility,
       rating: res.data.data.rating.toString(),
       roles: res.data.data.roles,
-      visiting_facilities: res.data.data.visiting_facilities
+      visiting_facilities: res.data.data.visiting_facilities,
+      isVisitor: false
     }
     
     let member = await interaction.guild?.members.fetch(uid);
     member.roles.remove(member.roles.cache);
-    await member.roles.add('475759174249349123'); //VATSIMController role
+    let role = await interaction.guild?.roles.fetch('475759174249349123')
+    await member.roles.add(role!); //VATSIMController role
     if (member != null) {
       switch (user.rating) {
         case "1": {
@@ -107,11 +109,19 @@ export class VerifyCommand extends Command {
         let role = await interaction.guild?.roles.fetch(rating);
         await member?.roles.add(role!);
         if (user.artcc != "ZJX") {
+          for (let i = 0; i < user.visiting_facilities.length; i++) {
+            if (user.visiting_facilities[i].facility == "ZJX") {
+              console.log("User is a visitor");
+              let role = await interaction.guild?.roles.fetch(config.visitor);
+              await member.roles.add(role!);
+            }
+          }
           switch (user.artcc) {
             case "ZTL": {
+              //TODO: Remove when working
+              console.log("Assigning ZTL Role");
               role = await interaction.guild?.roles.fetch('1198344104497659904');
               await member.roles.add(role!);
-              break;
             }
             case "ZMA": {
               role = await interaction.guild?.roles.fetch('1198344298832351272');
@@ -127,13 +137,8 @@ export class VerifyCommand extends Command {
               role = await interaction.guild?.roles.fetch('1198344523760271531');
               await member.roles.add(role!);
               break;
-            
             }
-          }
-          for (let i = 0; i < user.visiting_facilities.length; i++) {
-            if (user.visiting_facilities[i].facility == "ZJX") {
-              role = await interaction.guild?.roles.fetch(config.visitor);
-            } else {
+            default: {
               break;
             }
           }
@@ -257,7 +262,8 @@ interface User {
       created_at: string;
       updated_at: string;
     }
-  ]
+  ],
+  isVisitor: boolean;
 }
 
 interface IStringIndex {
