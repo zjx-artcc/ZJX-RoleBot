@@ -107,6 +107,29 @@ export class VerifyCommand extends Command {
         let role = await interaction.guild?.roles.fetch(rating);
         await member?.roles.add(role!);
         if (user.artcc != "ZJX") {
+          switch (user.artcc) {
+            case "ZTL": {
+              role = await interaction.guild?.roles.fetch('1198344104497659904');
+              await member.roles.add(role!);
+              break;
+            }
+            case "ZMA": {
+              role = await interaction.guild?.roles.fetch('1198344298832351272');
+              await member.roles.add(role!);
+              break;
+            }
+            case "ZHU": {
+              role = await interaction.guild?.roles.fetch('1198344426074947756');
+              await member.roles.add(role!);
+              break;
+            }
+            case "ZDC": {
+              role = await interaction.guild?.roles.fetch('1198344523760271531');
+              await member.roles.add(role!);
+              break;
+            
+            }
+          }
           for (let i = 0; i < user.visiting_facilities.length; i++) {
             if (user.visiting_facilities[i].facility == "ZJX") {
               role = await interaction.guild?.roles.fetch(config.visitor);
