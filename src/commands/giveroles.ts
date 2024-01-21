@@ -15,6 +15,7 @@ export class VerifyCommand extends Command {
   
   public async chatInputRun(interaction: Command.ChatInputCommandInteraction) {
     await interaction.deferReply();
+    let roles:Role[] = [];
     let config: IStringIndex = json;
     const uid = interaction.user.id;
     let res: AxiosResponse = {} as AxiosResponse;
@@ -53,8 +54,7 @@ export class VerifyCommand extends Command {
     
     let member = await interaction.guild?.members.fetch(uid);
     member.roles.remove(member.roles.cache);
-    let role = await interaction.guild?.roles.fetch('475759174249349123')
-    await member.roles.add(role!); //VATSIMController role
+    roles.push(await interaction.guild?.roles.fetch('475759174249349123'))
     if (member != null) {
       switch (user.rating) {
         case "1": {
@@ -106,36 +106,34 @@ export class VerifyCommand extends Command {
       try {
         await member.setNickname(`${user.fname} ${user.lname} | ${user.artcc}`);
         let rating = config[user.rating];
-        let role = await interaction.guild?.roles.fetch(rating);
-        await member?.roles.add(role!);
+        console.log(rating);
+        roles.push(await interaction.guild?.roles.fetch(rating));
+        console.log(`Line 111: ${await interaction.guild?.roles.fetch(rating)}`);
         if (user.artcc != "ZJX") {
           for (let i = 0; i < user.visiting_facilities.length; i++) {
             if (user.visiting_facilities[i].facility == "ZJX") {
               console.log("User is a visitor");
-              let role = await interaction.guild?.roles.fetch(config.visitor);
-              await member.roles.add(role!);
+              roles.push(await interaction.guild?.roles.fetch('471724207244443658'));
+              console.log(await interaction.guild?.roles.fetch('471724207244443658'));
+            } else {
+              break;
             }
           }
           switch (user.artcc) {
             case "ZTL": {
-              //TODO: Remove when working
-              console.log("Assigning ZTL Role");
-              role = await interaction.guild?.roles.fetch('1198344104497659904');
-              await member.roles.add(role!);
+              roles.push(await interaction.guild?.roles.fetch('1198344104497659904'));
+              break;
             }
             case "ZMA": {
-              role = await interaction.guild?.roles.fetch('1198344298832351272');
-              await member.roles.add(role!);
+              roles.push(await interaction.guild?.roles.fetch('1198344298832351272'));
               break;
             }
             case "ZHU": {
-              role = await interaction.guild?.roles.fetch('1198344426074947756');
-              await member.roles.add(role!);
+              roles.push(await interaction.guild?.roles.fetch('1198344426074947756'));
               break;
             }
             case "ZDC": {
-              role = await interaction.guild?.roles.fetch('1198344523760271531');
-              await member.roles.add(role!);
+              roles.push(await interaction.guild?.roles.fetch('1198344523760271531'));
               break;
             }
             default: {
@@ -143,9 +141,8 @@ export class VerifyCommand extends Command {
             }
           }
         } else {
-          role = await interaction.guild?.roles.fetch(config.member);
+          roles.push(await interaction.guild?.roles.fetch(config.member));
         }
-        await member?.roles.add(role!);
       } catch (error) {
         await handleError(0, interaction);
         console.log(`Line 115: ${error}`);
@@ -158,39 +155,33 @@ export class VerifyCommand extends Command {
         if (user.roles[i].facility == "ZAE") {
           break;
         } 
-        let role: Role | undefined | null;
         if (user.roles[i].facility != "ZJX") {
           break;
         }
         switch(user.roles[i].role) {
           case "ATM": 
-            role = await interaction.guild?.roles.fetch(config.atm);
-            await member?.roles.add(role!);
+            roles.push(await interaction.guild?.roles.fetch(config.atm));
             break;
           case "DATM": 
-            role = await interaction.guild?.roles.fetch(config.datm);
-            await member?.roles.add(role!);
+            roles.push(await interaction.guild?.roles.fetch(config.datm));
             break;
           case "TA":
-            role = await interaction.guild?.roles.fetch(config.ta);
-            await member?.roles.add(role!);
+            roles.push(await interaction.guild?.roles.fetch(config.ta));
             break;
           case "FE": 
-            role = await interaction.guild?.roles.fetch(config.fe);
-            await member?.roles.add(role!);
+            roles.push(await interaction.guild?.roles.fetch(config.fe));
             break;
           case "EC":
-            role = await interaction.guild?.roles.fetch(config.ec);
-            await member?.roles.add(role!);
+            roles.push(await interaction.guild?.roles.fetch(config.ec));
             break;
           case "WM":
-            role = await interaction.guild?.roles.fetch(config.wm);
-            await member?.roles.add(role!);
+            roles.push(await interaction.guild?.roles.fetch(config.wm));
             break;
         }
       }
     }
-    
+    console.log(roles);
+    await member.roles.add(roles);
     await interaction.editReply("Your roles have been assigned!");
     return;
   }
