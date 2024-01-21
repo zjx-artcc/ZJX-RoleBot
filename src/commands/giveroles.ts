@@ -111,16 +111,17 @@ export class VerifyCommand extends Command {
       try {
         await member.setNickname(`${user.fname} ${user.lname} | ${user.artcc}`);
         let rating = config[user.rating];
-        console.log(rating);
         roles.push(await interaction.guild?.roles.fetch(rating));
-        console.log(`Line 111: ${await interaction.guild?.roles.fetch(rating)}`);
         if (user.artcc != "ZJX") {
           for (let i = 0; i < user.visiting_facilities.length; i++) {
             if (user.visiting_facilities[i].facility == "ZJX") {
               console.log("User is a visitor");
+              console.log(config.visitor);
+              console.log(await interaction.guild?.roles.fetch(config.visitor));
               roles.push(await interaction.guild?.roles.fetch(config.visitor)); //Add 'Visiting Controller' Role
-            } else {
               break;
+            } else {
+              continue;
             }
           }
           //* Edit below based on neighboring ARTCCs
