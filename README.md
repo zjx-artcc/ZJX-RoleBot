@@ -3,7 +3,7 @@ Automatically assigns roles based on VATSIM Rating + Facility
 
 # Installation
 1. Clone the repository \
-```git clone https://github.com/zjxartcc/rolebot.git```
+```git clone https://github.com/ZJX-ARTCC/ZJX-RoleBot.git```
 2. Install dependencies \
 ```yarn``` or ```npm i```
 3. Add your bot token to `.env.example` and rename it to `.env`
