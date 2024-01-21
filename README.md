@@ -14,7 +14,7 @@ Automatically assigns roles based on VATSIM Rating + Facility
 ```yarn start```
 
 # Deploying
-You can deploy the bot using Docker (preferred) or pm2. \
+You can deploy the bot using Docker (preferred) or pm2.
 ## Docker
 1. Run `docker compose up --build -d`
 2. Confirm the bot is up by running `docker ps`
