@@ -54,9 +54,10 @@ export class VerifyCommand extends Command {
     
     let member = await interaction.guild?.members.fetch(uid);
     member.roles.remove(member.roles.cache);
-    roles.push(await interaction.guild?.roles.fetch('475759174249349123'))
+    roles.push(await interaction.guild?.roles.fetch(config.base)) //VATSIMController for ZJX
     if (member != null) {
-      switch (user.rating) {
+      //Convert VATSIM Rating Integer to String
+      switch (user.rating) { 
         case "1": {
           user.rating = "OBS";
           break;
@@ -75,6 +76,10 @@ export class VerifyCommand extends Command {
         }
         case "5": {
           user.rating = "C1";
+          break;
+        }
+        case "6": {
+          //C2 - Unused for VATSIM
           break;
         }
         case "7": {
@@ -113,12 +118,12 @@ export class VerifyCommand extends Command {
           for (let i = 0; i < user.visiting_facilities.length; i++) {
             if (user.visiting_facilities[i].facility == "ZJX") {
               console.log("User is a visitor");
-              roles.push(await interaction.guild?.roles.fetch('471724207244443658'));
-              console.log(await interaction.guild?.roles.fetch('471724207244443658'));
+              roles.push(await interaction.guild?.roles.fetch(config.visitor)); //Add 'Visiting Controller' Role
             } else {
               break;
             }
           }
+          //* Edit below based on neighboring ARTCCs
           switch (user.artcc) {
             case "ZTL": {
               roles.push(await interaction.guild?.roles.fetch('1198344104497659904'));
@@ -141,7 +146,7 @@ export class VerifyCommand extends Command {
             }
           }
         } else {
-          roles.push(await interaction.guild?.roles.fetch(config.member));
+          roles.push(await interaction.guild?.roles.fetch(config.member)); //Add 'ZJX Controller' role
         }
       } catch (error) {
         await handleError(0, interaction);
@@ -158,6 +163,7 @@ export class VerifyCommand extends Command {
         if (user.roles[i].facility != "ZJX") {
           break;
         }
+        //Really pointless since the role bot is not able to assign roles higher than itself
         switch(user.roles[i].role) {
           case "ATM": 
             roles.push(await interaction.guild?.roles.fetch(config.atm));
@@ -181,7 +187,7 @@ export class VerifyCommand extends Command {
       }
     }
     console.log(roles);
-    await member.roles.add(roles);
+    await member.roles.add(roles); //Add all roles in the roles[] array
     await interaction.editReply("Your roles have been assigned!");
     return;
   }
@@ -219,10 +225,15 @@ async function handleError(error: number, interaction: Command.ChatInputCommandI
 
 async function sendError(errorText: string, interaction: Command.ChatInputCommandInteraction) {
   let errorDate = new Date();
+  let config: IStringIndex = json;
   let errorStamp = errorDate.toLocaleDateString() + " " + errorDate.toLocaleTimeString();
   console.log(errorText);
+  const message = `${errorStamp} Zulu: ${errorText}`
   await interaction.editReply(errorText + " \n**The developers have been notified of this error.**")
-  await interaction.client.users.send("312974144574717952",`${errorStamp} Zulu: ${errorText}`)
+  for (let i = 0; i < config.notified_users.length; i++) {
+    let user = await interaction.client.users.fetch(config.notified_users[i]);
+    user.send(message);
+  }
   return;
 }
 
