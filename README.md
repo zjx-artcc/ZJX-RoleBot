@@ -1,17 +1,8 @@
 # ZJX Discord Role Bot
 Automatically assigns roles based on VATSIM Rating + Facility
 
-# Installation
-1. Clone the repository \
-```git clone https://github.com/ZJX-ARTCC/ZJX-RoleBot.git```
-2. Install dependencies \
-```yarn``` or ```npm i```
-3. Add your bot token to `.env.example` and rename it to `.env`
-- ```mv .env.example .env```
-4. Compile the bot \
-```yarn build```
-5. Run the bot \
-```yarn start```
+> [!WARNING]
+> This project is no longer maintained. Please use at your own risk.
 
 # Deploying
 You can deploy the bot using Docker (preferred) or pm2.
