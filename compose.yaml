@@ -3,6 +3,7 @@ services:
     build:
       context: .
     container_name: discordBot
+    restart: always
     environment:
       NODE_ENV: production
       TOKEN: ${TOKEN}
